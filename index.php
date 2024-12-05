@@ -17,61 +17,63 @@ $PAGE->set_heading(get_string('pluginname', 'local_sigaa'));
 $mform = new fetch_form();
 
 if ($mform->is_cancelled()) {
-redirect(new moodle_url('/admin/settings.php', ['section' => 'courses']));
+    redirect(new moodle_url('/admin/settings.php', ['section' => 'courses']));
 } else if ($data = $mform->get_data()) {
-$course_id = intval($data->courseid);
-$url = "http://localhost:3000/courses/{$course_id}";
+    $course_id = intval($data->courseid);
+    $url = "http://localhost:3000/courses/{$course_id}";
 
-$response = file_get_contents($url);
-$course_data = json_decode($response, true);
+    $response = file_get_contents($url);
+    $course_data = json_decode($response, true);
 
-if (isset($course_data['name']) && isset($course_data['participants'])) {
+    if (isset($course_data['name']) && isset($course_data['participants'])) {
 
-echo $OUTPUT->header();
-echo html_writer::tag('h2', get_string('course_name', 'local_sigaa') . ': ' . $course_data['name']);
-echo html_writer::tag('p', get_string('participants_count', 'local_sigaa') . ': ' . count($course_data['participants']));
+        echo $OUTPUT->header();
+        echo html_writer::tag('h2', get_string('course_name', 'local_sigaa') . ': ' . $course_data['name']);
+        echo html_writer::tag('p', get_string('participants_count', 'local_sigaa') . ': ' . count($course_data['participants']));
 
-$confirm_url = new moodle_url('/local/sigaa/index.php', [
-'confirm' => 1,
-'coursename' => $course_data['name'],
-'courseid' => $course_id
-]);
-echo html_writer::tag('p', html_writer::link($confirm_url, get_string('confirmcreate', 'local_sigaa'), ['class' => 'btn btn-primary']));
-echo $OUTPUT->footer();
-die();
-} else {
-echo $OUTPUT->header();
-echo html_writer::tag('p', get_string('no_course_found', 'local_sigaa'));
-echo $OUTPUT->footer();
-die();
-}
+        $participants = isset($course_data['participants']) ? $course_data['participants'] : [];
+
+        $confirm_url = new moodle_url('/local/sigaa/index.php', [
+            'confirm' => 1,
+            'coursename' => $course_data['name'],
+            'courseid' => $course_id,
+            'participants' => json_encode($participants)
+        ]);
+        echo html_writer::tag('p', html_writer::link($confirm_url, get_string('confirmcreate', 'local_sigaa'), ['class' => 'btn btn-primary']));
+        echo $OUTPUT->footer();
+        die();
+    } else {
+        echo $OUTPUT->header();
+        echo html_writer::tag('p', get_string('no_course_found', 'local_sigaa'));
+        echo $OUTPUT->footer();
+        die();
+    }
 }
 
 if (optional_param('confirm', 0, PARAM_INT) === 1) {
-$coursename = required_param('coursename', PARAM_TEXT);
-$courseid = required_param('courseid', PARAM_INT);
+    $coursename = required_param('coursename', PARAM_TEXT);
+    $courseid = required_param('courseid', PARAM_INT);
+    $participants = json_decode(optional_param('participants', '[]', PARAM_RAW)); // Recupere os participantes da URL
 
+    try {
+        $newcourse = create_course_custom(
+            $coursename,
+            $coursename,
+            1,
+            $participants,
+            'Curso criado automaticamente',
+            'topics'
+        );
 
-try {
-    $newcourse = create_course_custom(
-        $coursename,
-        $coursename,
-        1,
-        'Curso criado automaticamente',
-        'topics'
-    );
+        echo "Curso criado com sucesso: {$newcourse->fullname}";
+    } catch (Exception $e) {
+        echo "Erro ao criar o curso: " . $e->getMessage();
+    }
 
-    echo "Curso criado com sucesso: {$newcourse->fullname}";
-} catch (Exception $e) {
-    echo "Erro ao criar o curso: " . $e->getMessage();
-}
-
-
-
-echo $OUTPUT->header();
-echo html_writer::tag('h2', get_string('coursecreated', 'local_sigaa') . ': ' . $newcourse->fullname);
-echo $OUTPUT->footer();
-die();
+    echo $OUTPUT->header();
+    echo html_writer::tag('h2', get_string('coursecreated', 'local_sigaa') . ': ' . $newcourse->fullname);
+    echo $OUTPUT->footer();
+    die();
 }
 
 echo $OUTPUT->header();
