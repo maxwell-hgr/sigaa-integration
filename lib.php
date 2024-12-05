@@ -39,22 +39,44 @@ function create_course_custom($fullname, $shortname, $categoryid, $participants 
         throw new moodle_exception('noenrolmentplugin', 'error');
     }
 
+    $not_found_users = [];
+
     if (!empty($participants)) {
         foreach ($participants as $username) {
-            echo '<script>console.log("Username: ' . addslashes($username) . '");</script>';
-
             $user = $DB->get_record('user', array('username' => $username));
-
             if ($user) {
                 $manualenrol->enrol_user($manualinstance, $user->id, 5); // 5 -> student role
-                echo '<script>console.log("Usuário ' . addslashes($username) . ' inscrito com sucesso.");</script>';
             } else {
-                echo '<script>console.log("Usuário com username ' . addslashes($username) . ' não encontrado.");</script>';
+                $not_found_users[] = [
+                    'username' => $username,
+                    'reason' => 'User not found'
+                ];
             }
         }
-    } else {
-        echo '<script>console.log("participants is empty");</script>';
     }
 
-    return $newcourse;
+    return [$newcourse, $not_found_users];
+}
+
+function generate_csv($data, $coursename) {
+    if (ob_get_length()) {
+        ob_end_clean();
+    }
+
+    $filename = "usuarios_nao_registrados_{$coursename}_" . time() . ".csv";
+
+    header('Content-Type: text/csv');
+    header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+    $output = fopen('php://output', 'w');
+
+    fputcsv($output, ['Username', 'Reason']);
+
+    foreach ($data as $row) {
+        fputcsv($output, $row);
+    }
+
+    fclose($output);
+
+    exit();
 }
