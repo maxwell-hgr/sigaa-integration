@@ -10,3 +10,7 @@ $string['coursecreated'] = 'Course Created Successfully';
 $string['usersnotfound'] = 'Users Not Found';
 $string['downloadcsv'] = 'Downlaod CSV with not found users';
 $string['nocsvdata'] = 'No csv data found';
+$string['endpoint'] = 'API Endpoint';
+$string['endpoint_desc'] = 'Base URL for fetching course data.';
+
+

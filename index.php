@@ -16,11 +16,13 @@ $PAGE->set_heading(get_string('pluginname', 'local_sigaa'));
 
 $mform = new fetch_form();
 
+$endpoint = get_config('local_sigaa', 'endpoint');
+
 if ($mform->is_cancelled()) {
     redirect(new moodle_url('/admin/settings.php', ['section' => 'courses']));
 } else if ($data = $mform->get_data()) {
     $course_id = intval($data->courseid);
-    $url = "http://localhost:3000/courses/{$course_id}";
+    $url = "{$endpoint}{$course_id}";
 
     $response = file_get_contents($url);
     $course_data = json_decode($response, true);
