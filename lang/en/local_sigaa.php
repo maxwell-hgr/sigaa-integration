@@ -1,5 +1,5 @@
 <?php
-$string['pluginname'] = 'SIGAA Integration - COURSE';
+$string['pluginname'] = 'WEBSERVICE Integration - COURSE';
 $string['enter_course_id'] = 'Enter Course ID';
 $string['submit'] = 'Submit';
 $string['course_name'] = 'Course Name';

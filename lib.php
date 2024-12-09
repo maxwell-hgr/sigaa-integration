@@ -63,7 +63,7 @@ function generate_csv($data, $coursename) {
         ob_end_clean();
     }
 
-    $filename = "usuarios_nao_registrados_{$coursename}_" . time() . ".csv";
+    $filename = "users_not_found_{$coursename}_" . time() . ".csv";
 
     header('Content-Type: text/csv');
     header('Content-Disposition: attachment; filename="' . $filename . '"');

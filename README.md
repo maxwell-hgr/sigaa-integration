@@ -1,4 +1,4 @@
-# Moodle Plugin: Local SIGAA
+# Moodle Plugin: Local WEBCOURSE
 
 ## Description
 This plugin integrates Moodle with an external microservice to create courses and enroll users. It validates users, generates a CSV file for non-existent users, and automates course setup.
@@ -21,7 +21,7 @@ This plugin integrates Moodle with an external microservice to create courses an
 
 ## Usage
 1. Set the correct endpoint for your requisition.
-2. Access the plugin page in Moodle: `/local/sigaa/index.php`.
+2. Access the plugin page in Moodle: `/local/webcourse/index.php`.
 3. Input the course ID from the external microservice.
 3. Confirm course creation.
 4. Download the CSV of missing users, if applicable.
@@ -33,7 +33,7 @@ This plugin integrates Moodle with an external microservice to create courses an
 ## File Structure
 - `index.php`: Handles user interaction and workflow.
 - `lib.php`: Helper functions for course creation and enrollment.
-- `lang/en/local_sigaa.php`: Language strings.
+- `lang/en/local_webcourse.php`: Language strings.
 
 ## License
 This project is licensed under the [GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.html).
