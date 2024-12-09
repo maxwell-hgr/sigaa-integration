@@ -1,5 +1,5 @@
 <?php
-$string['pluginname'] = 'SIGAA Integration';
+$string['pluginname'] = 'SIGAA Integration - COURSE';
 $string['enter_course_id'] = 'Enter Course ID';
 $string['submit'] = 'Submit';
 $string['course_name'] = 'Course Name';
@@ -12,5 +12,6 @@ $string['downloadcsv'] = 'Downlaod CSV with not found users';
 $string['nocsvdata'] = 'No csv data found';
 $string['endpoint'] = 'API Endpoint';
 $string['endpoint_desc'] = 'Base URL for fetching course data.';
+$string['coursecreationerror'] = 'ERROR creating new course';
 
 
