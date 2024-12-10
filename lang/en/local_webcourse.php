@@ -25,20 +25,20 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['enter_course_id'] = 'Enter Course ID';
-$string['course_name'] = 'Course Name';
-$string['pluginname'] = 'WEBSERVICE Integration - COURSE';
 $string['confirmcreate'] = 'Confirm and Create Course';
-$string['submit'] = 'Submit';
-$string['no_course_found'] = 'No course found with the given ID.';
+$string['course_name'] = 'Course Name';
 $string['coursecreated'] = 'Course Created Successfully';
-$string['participants_count'] = 'Participants Count';
+$string['coursecreationerror'] = 'ERROR creating new course';
 $string['downloadcsv'] = 'Downlaod CSV with not found users';
 $string['endpoint'] = 'API Endpoint';
-$string['usersnotfound'] = 'Users Not Found';
-$string['coursecreationerror'] = 'ERROR creating new course';
-$string['nocsvdata'] = 'No csv data found';
 $string['endpoint_desc'] = 'Base URL for fetching course data.';
+$string['enter_course_id'] = 'Enter Course ID';
+$string['no_course_found'] = 'No course found with the given ID.';
+$string['nocsvdata'] = 'No csv data found';
+$string['participants_count'] = 'Participants Count';
+$string['pluginname'] = 'WEBSERVICE Integration - COURSE';
 $string['privacy:metadata'] = 'The Webcourse plugin does not store any personal data.';
+$string['submit'] = 'Submit';
+$string['usersnotfound'] = 'Users Not Found';
 
 
