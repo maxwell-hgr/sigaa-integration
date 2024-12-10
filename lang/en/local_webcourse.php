@@ -26,18 +26,18 @@
  */
 
 $string['enter_course_id'] = 'Enter Course ID';
-$string['pluginname'] = 'WEBSERVICE Integration - COURSE';
 $string['course_name'] = 'Course Name';
-$string['submit'] = 'Submit';
+$string['pluginname'] = 'WEBSERVICE Integration - COURSE';
 $string['confirmcreate'] = 'Confirm and Create Course';
+$string['submit'] = 'Submit';
 $string['no_course_found'] = 'No course found with the given ID.';
-$string['participants_count'] = 'Participants Count';
 $string['coursecreated'] = 'Course Created Successfully';
+$string['participants_count'] = 'Participants Count';
 $string['downloadcsv'] = 'Downlaod CSV with not found users';
-$string['usersnotfound'] = 'Users Not Found';
 $string['endpoint'] = 'API Endpoint';
-$string['nocsvdata'] = 'No csv data found';
+$string['usersnotfound'] = 'Users Not Found';
 $string['coursecreationerror'] = 'ERROR creating new course';
+$string['nocsvdata'] = 'No csv data found';
 $string['endpoint_desc'] = 'Base URL for fetching course data.';
 $string['privacy:metadata'] = 'The Webcourse plugin does not store any personal data.';
 
