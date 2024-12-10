@@ -13,5 +13,6 @@ $string['nocsvdata'] = 'No csv data found';
 $string['endpoint'] = 'API Endpoint';
 $string['endpoint_desc'] = 'Base URL for fetching course data.';
 $string['coursecreationerror'] = 'ERROR creating new course';
+$string['privacy:metadata'] = 'The Webcourse plugin does not store any personal data.';
 
 

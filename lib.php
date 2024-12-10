@@ -5,7 +5,7 @@ require_once($CFG->dirroot . '/enrol/manual/locallib.php');
 
 defined('MOODLE_INTERNAL') || die();
 
-function create_course_custom($fullname, $shortname, $categoryid, $participants = [], $summary = '', $format = 'topics') {
+function local_webcourse_create_course($fullname, $shortname, $categoryid, $participants = [], $summary = '', $format = 'topics') {
     global $DB;
 
     $category = \core_course_category::get($categoryid, IGNORE_MISSING);
@@ -58,7 +58,7 @@ function create_course_custom($fullname, $shortname, $categoryid, $participants 
     return [$newcourse, $not_found_users];
 }
 
-function generate_csv($data, $coursename) {
+function local_webcourse_generate_csv($data, $coursename) {
     if (ob_get_length()) {
         ob_end_clean();
     }

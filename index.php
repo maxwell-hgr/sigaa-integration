@@ -21,23 +21,23 @@ $endpoint = get_config('local_webcourse', 'endpoint');
 if ($mform->is_cancelled()) {
     redirect(new moodle_url('/admin/settings.php', ['section' => 'courses']));
 } else if ($data = $mform->get_data()) {
-    $course_id = intval($data->courseid);
+    $course_id = clean_param($data->courseid, PARAM_INT); // Sanitiza o ID do curso
     $url = "{$endpoint}{$course_id}";
 
     $response = file_get_contents($url);
     $course_data = json_decode($response, true);
 
     if (isset($course_data['name']) && isset($course_data['participants'])) {
+        $coursename = clean_param($course_data['name'], PARAM_TEXT); // Sanitiza o nome do curso
+        $participants = array_map(fn($p) => clean_param($p, PARAM_USERNAME), $course_data['participants']); // Sanitiza os usernames
 
         echo $OUTPUT->header();
-        echo html_writer::tag('h2', get_string('course_name', 'local_webcourse') . ': ' . $course_data['name']);
-        echo html_writer::tag('p', get_string('participants_count', 'local_webcourse') . ': ' . count($course_data['participants']));
-
-        $participants = isset($course_data['participants']) ? $course_data['participants'] : [];
+        echo html_writer::tag('h2', get_string('course_name', 'local_webcourse') . ': ' . $coursename);
+        echo html_writer::tag('p', get_string('participants_count', 'local_webcourse') . ': ' . count($participants));
 
         $confirm_url = new moodle_url('/local/webcourse/index.php', [
             'confirm' => 1,
-            'coursename' => $course_data['name'],
+            'coursename' => $coursename,
             'courseid' => $course_id,
             'participants' => json_encode($participants)
         ]);
@@ -53,9 +53,11 @@ if ($mform->is_cancelled()) {
 }
 
 if (optional_param('confirm', 0, PARAM_INT) === 1) {
-    $coursename = required_param('coursename', PARAM_TEXT);
-    $courseid = required_param('courseid', PARAM_INT);
-    $participants = json_decode(optional_param('participants', '[]', PARAM_RAW)); // Recupere os participantes da URL
+    $coursename = clean_param(required_param('coursename', PARAM_TEXT), PARAM_TEXT);
+    $courseid = clean_param(required_param('courseid', PARAM_INT), PARAM_INT);
+    $participants = json_decode(optional_param('participants', '[]', PARAM_RAW));
+
+    $participants = array_map(fn($p) => clean_param($p, PARAM_USERNAME), $participants);
 
     try {
         list($newcourse, $not_found_users) = create_course_custom(
@@ -74,15 +76,13 @@ if (optional_param('confirm', 0, PARAM_INT) === 1) {
             $count_not_found = count($not_found_users);
             echo html_writer::tag('p', get_string('usersnotfound', 'local_webcourse') . ": {$count_not_found}");
 
-            // Codificar os usuários não encontrados para envio pela URL
             $csv_data = urlencode(json_encode($not_found_users));
             $csv_url = new moodle_url('/local/webcourse/index.php', [
                 'downloadcsv' => 1,
-                'coursename' => $newcourse->fullname,
+                'coursename' => clean_param($newcourse->fullname, PARAM_TEXT),
                 'data' => $csv_data
             ]);
 
-            // Botão para baixar o CSV.
             echo html_writer::tag(
                 'p',
                 html_writer::link($csv_url, get_string('downloadcsv', 'local_webcourse'), ['class' => 'btn btn-secondary'])
@@ -99,9 +99,8 @@ if (optional_param('confirm', 0, PARAM_INT) === 1) {
     die();
 }
 
-// Gerar CSV quando o botão for clicado.
 if (optional_param('downloadcsv', 0, PARAM_INT) === 1) {
-    $coursename = required_param('coursename', PARAM_TEXT);
+    $coursename = clean_param(required_param('coursename', PARAM_TEXT), PARAM_TEXT);
     $not_found_users = json_decode(urldecode(required_param('data', PARAM_RAW)), true);
 
     if (!empty($not_found_users)) {
