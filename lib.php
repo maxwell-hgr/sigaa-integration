@@ -15,11 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Create a course and enroll users with external course and users data
+ * Library of functions for webcourse plugin.
  *
  * @package   local_webcourse
- * @category  local
- * @copyright 2024 Maxwell Souza (https://github.com/maxwell-hgr/moodle-local_webcourse/issues)
+ * @copyright 2024 Maxwell Souza <maxwell.hygor01@gmail.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -27,8 +26,21 @@ require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/course/lib.php');
 require_once($CFG->dirroot . '/enrol/manual/locallib.php');
 
+require_login();
+
 defined('MOODLE_INTERNAL') || die();
 
+
+/**
+ * Create a new course and enroll users.
+ * @param string $fullname complete name of the course.
+ * @param string $shortname it's the same name avoiding name collision.
+ * @param int $categoryid id of the category the course will be registered.
+ * @param array $participants participants data to enroll the users.
+ * @param string $summary empty summary that will be filled on course creation.
+ * @param string $format default value 'topics' for any course.
+ * @return array Data of the created course and users not found.
+ */
 function local_webcourse_create_course($fullname, $shortname, $categoryid, $participants = [], $summary = '', $format = 'topics') {
     global $DB;
 
@@ -49,12 +61,12 @@ function local_webcourse_create_course($fullname, $shortname, $categoryid, $part
 
     $manualenrol = enrol_get_plugin('manual');
 
-    $instance = enrol_get_instances($newcourse->id, true);
-
+    $instances = enrol_get_instances($newcourse->id, true);
     $manualinstance = null;
-    foreach ($instance as $inst) {
-        if ($inst->enrol === 'manual') {
-            $manualinstance = $inst;
+
+    foreach ($instances as $instance) {
+        if ($instance->enrol === 'manual') {
+            $manualinstance = $instance;
             break;
         }
     }
@@ -63,25 +75,30 @@ function local_webcourse_create_course($fullname, $shortname, $categoryid, $part
         throw new moodle_exception('noenrolmentplugin', 'error');
     }
 
-    $not_found_users = [];
+    $notfoundusers = [];
 
     if (!empty($participants)) {
         foreach ($participants as $username) {
-            $user = $DB->get_record('user', array('username' => $username));
+            $user = $DB->get_record('user', ['username' => $username]);
             if ($user) {
-                $manualenrol->enrol_user($manualinstance, $user->id, 5); // 5 -> student role
+                $manualenrol->enrol_user($manualinstance, $user->id, 5);
             } else {
-                $not_found_users[] = [
-                    'username' => $username,
-                    'reason' => 'User not found'
+                $notfoundusers[] = [
+                    'label' => __('Username: ' . $username),
+                    'value' => __('User not found'),
                 ];
             }
         }
     }
 
-    return [$newcourse, $not_found_users];
+    return [$newcourse, $notfoundusers];
 }
 
+/**
+ * Create the CSV file with missing users.
+ * @param array $data collection of missing users.
+ * @param string $coursename complete name of the course.
+ */
 function local_webcourse_generate_csv($data, $coursename) {
     if (ob_get_length()) {
         ob_end_clean();
@@ -97,9 +114,13 @@ function local_webcourse_generate_csv($data, $coursename) {
     fputcsv($output, ['Username', 'Reason']);
 
     foreach ($data as $row) {
-        fputcsv($output, $row);
-    }
+        $formattedRow = [
+            'label' => __('Username: ' . $row['username']),
+            'value' => $row['reason'],
+        ];
 
+        fputcsv($output, [$formattedRow['label'], $formattedRow['value']]);
+    }
     fclose($output);
 
     exit();

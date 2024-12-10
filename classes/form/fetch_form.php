@@ -15,11 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Create a course and enroll users with external course and users data
+ * Form config for local_webcourse.
  *
  * @package   local_webcourse
- * @category  local
- * @copyright 2024 Maxwell Souza (https://github.com/maxwell-hgr/moodle-local_webcourse/issues)
+ * @copyright 2024 Maxwell Souza <maxwell.hygor01@gmail.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -28,6 +27,8 @@ namespace local_webcourse\form;
 use moodleform;
 
 require_once($CFG->libdir . '/formslib.php');
+
+defined('MOODLE_INTERNAL') || die();
 
 class fetch_form extends moodleform {
     public function definition() {
