@@ -30,8 +30,6 @@ require_once($CFG->dirroot . '/enrol/manual/locallib.php');
 
 require_login();
 
-
-
 /**
  * Create a new course and enroll users.
  * @param string $fullname complete name of the course.

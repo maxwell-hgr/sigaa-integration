@@ -21,7 +21,6 @@
  * if you like, and it can span multiple lines.
  *
  * @package   local_webcourse
- * @category  local
  * @copyright 2024 Maxwell Souza (https://github.com/maxwell-hgr/moodle-local_webcourse/issues)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
