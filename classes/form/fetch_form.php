@@ -22,15 +22,33 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_webcourse\form;
-
-use moodleform;
-
-require_once($CFG->libdir . '/formslib.php');
-
 defined('MOODLE_INTERNAL') || die();
 
+namespace local_webcourse\form;
+use moodleform;
+require_once($CFG->libdir . '/formslib.php');
+
+
+/**
+ * Form for fetching a course based on the course ID.
+ *
+ * This class defines a custom form to capture a course ID. It extends the `moodleform` class from Moodle
+ * and includes the creation of a text input field for the course ID with validation to ensure the field is filled.
+ *
+ * @package    local_webcourse
+ * @subpackage form
+ */
 class fetch_form extends moodleform {
+
+    /**
+     * Defines the form elements.
+     *
+     * This function defines the elements and rules of the form. It adds a text input field for the course ID,
+     * sets the field type to integer, and adds a validation rule to ensure the field is required.
+     * It also adds action buttons to the form.
+     *
+     * @return void
+     */
     public function definition() {
         $mform = $this->_form;
 

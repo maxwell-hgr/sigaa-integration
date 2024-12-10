@@ -22,6 +22,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 require_once(__DIR__ . '/../../config.php');
 require_once('lib.php');
 
@@ -29,7 +31,6 @@ require_login();
 
 use local_webcourse\form\fetch_form;
 
-defined('MOODLE_INTERNAL') || die();
 
 $context = context_system::instance();
 require_capability('moodle/site:config', $context);
@@ -46,8 +47,8 @@ $endpoint = get_config('local_webcourse', 'endpoint');
 if ($mform->is_cancelled()) {
     redirect(new moodle_url('/admin/settings.php', ['section' => 'courses']));
 } else if ($data = $mform->get_data()) {
-    $courseId = clean_param($data->courseid, PARAM_INT);
-    $url = "{$endpoint}{$courseId}";
+    $courseidform = clean_param($data->courseid, PARAM_INT);
+    $url = "{$endpoint}{$courseidform}";
 
     $response = file_get_contents($url);
     $coursedata = json_decode($response, true);
@@ -63,7 +64,7 @@ if ($mform->is_cancelled()) {
         $confirmurl = new moodle_url('/local/webcourse/index.php', [
             'confirm' => 1,
             'coursename' => $coursename,
-            'courseid' => $courseId,
+            'courseid' => $courseidform,
             'participants' => json_encode($participants),
         ]);
         echo html_writer::tag('p', html_writer::link($confirmurl, get_string('confirmcreate', 'local_webcourse'),
@@ -102,16 +103,16 @@ if (optional_param('confirm', 0, PARAM_INT) === 1) {
             $countnotfound = count($notfoundusers);
             echo html_writer::tag('p', get_string('usersnotfound', 'local_webcourse') . ": {$countnotfound}");
 
-            $csv_data = urlencode(json_encode($notfoundusers));
-            $csv_url = new moodle_url('/local/webcourse/index.php', [
+            $csvdata = urlencode(json_encode($notfoundusers));
+            $csvurl = new moodle_url('/local/webcourse/index.php', [
                 'downloadcsv' => 1,
                 'coursename' => clean_param($newcourse->fullname, PARAM_TEXT),
-                'data' => $csv_data,
+                'data' => $csvdata,
             ]);
 
             echo html_writer::tag(
                 'p',
-                html_writer::link($csv_url, get_string('downloadcsv', 'local_webcourse'), ['class' => 'btn btn-secondary'])
+                html_writer::link($csvurl, get_string('downloadcsv', 'local_webcourse'), ['class' => 'btn btn-secondary'])
             );
         }
 

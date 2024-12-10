@@ -22,13 +22,14 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/course/lib.php');
 require_once($CFG->dirroot . '/enrol/manual/locallib.php');
 
 require_login();
 
-defined('MOODLE_INTERNAL') || die();
 
 
 /**
@@ -114,12 +115,12 @@ function local_webcourse_generate_csv($data, $coursename) {
     fputcsv($output, ['Username', 'Reason']);
 
     foreach ($data as $row) {
-        $formattedRow = [
+        $formattedrow = [
             'label' => __('Username: ' . $row['username']),
             'value' => $row['reason'],
         ];
 
-        fputcsv($output, [$formattedRow['label'], $formattedRow['value']]);
+        fputcsv($output, [$formattedrow['label'], $formattedrow['value']]);
     }
     fclose($output);
 

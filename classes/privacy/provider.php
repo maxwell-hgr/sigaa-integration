@@ -24,8 +24,14 @@
 
 namespace local_webcourse\privacy;
 
-defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Privacy Subsystem for local_webcourse.
+ *
+ * @package   local_webcourse
+ * @copyright 2024 Maxwell Souza <maxwell.hygor01@gmail.com>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class provider implements \core_privacy\local\metadata\null_provider {
 
     /**
