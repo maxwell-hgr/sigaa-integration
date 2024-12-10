@@ -1,4 +1,16 @@
 <?php
+/**
+ * English strings for Webcourse
+ *
+ * You can have a rather longer description of the file as well,
+ * if you like, and it can span multiple lines.
+ *
+ * @package   local_webcourse
+ * @category  local
+ * @copyright 2024 Maxwell Souza (https://github.com/maxwell-hgr/moodle-local_webcourse/issues)
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 $string['pluginname'] = 'WEBSERVICE Integration - COURSE';
 $string['enter_course_id'] = 'Enter Course ID';
 $string['submit'] = 'Submit';
