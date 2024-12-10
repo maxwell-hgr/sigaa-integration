@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_webcourse';
-$plugin->version = 2024120300;
+$plugin->version = 2024121000;
 $plugin->requires = 2021051700; // Requires Moodle 3.11 or higher.
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.0';
+$plugin->release = '1.1';
