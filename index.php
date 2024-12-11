@@ -87,7 +87,7 @@ if (optional_param('confirm', 0, PARAM_INT) === 1) {
     $participants = array_map(fn($p) => clean_param($p, PARAM_USERNAME), $participants);
 
     try {
-        list($newcourse, $notfoundusers) = create_course_custom(
+        list($newcourse, $notfoundusers) = local_webcourse_create_course(
             $coursename,
             $coursename,
             1,
@@ -131,7 +131,7 @@ if (optional_param('downloadcsv', 0, PARAM_INT) === 1) {
     $notfoundusers = json_decode(urldecode(required_param('data', PARAM_RAW)), true);
 
     if (!empty($notfoundusers)) {
-        generate_csv($notfoundusers, $coursename);
+        local_webcourse_generate_csv($notfoundusers, $coursename);
     } else {
         redirect(new moodle_url('/local/webcourse/index.php'),
             get_string('nocsvdata', 'local_webcourse'), null, \core\output\notification::NOTIFY_WARNING);
