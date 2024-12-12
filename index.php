@@ -22,15 +22,12 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 require_once(__DIR__ . '/../../config.php');
 require_once('lib.php');
 
 require_login();
 
 use local_webcourse\form\fetch_form;
-
 
 $context = context_system::instance();
 require_capability('moodle/site:config', $context);
