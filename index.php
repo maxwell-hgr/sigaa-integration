@@ -84,10 +84,11 @@ if (optional_param('confirm', 0, PARAM_INT) === 1) {
     $participants = array_map(fn($p) => clean_param($p, PARAM_USERNAME), $participants);
 
     try {
+        $categoryid = get_config('local_webcourse', 'categoryid');
         list($newcourse, $notfoundusers) = local_webcourse_create_course(
             $coursename,
             $coursename,
-            1,
+            $categoryid,
             $participants,
             'Curso criado automaticamente',
             'topics'

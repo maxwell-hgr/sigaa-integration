@@ -37,8 +37,32 @@ if ($hassiteconfig) {
         'local_webcourse/endpoint',
         get_string('endpoint', 'local_webcourse'),
         get_string('endpoint_desc', 'local_webcourse'),
-        'http://localhost:3000/courses/',
+        '',
         PARAM_URL
+    ));
+
+    $roles = role_get_names();
+    $roleoptions = [];
+    foreach ($roles as $roleid => $roledata) {
+        $roleoptions[$roleid] = format_string($roledata->localname ?? $roledata->shortname, true);
+    }
+
+    $settings->add(new admin_setting_configselect(
+        'local_webcourse/roleid',
+        get_string('roleid', 'local_webcourse'),
+        get_string('roleid_desc', 'local_webcourse'),
+        5,
+        $roleoptions
+    ));
+
+
+    $categories = $DB->get_records_menu('course_categories', null, 'name ASC', 'id, name');
+    $settings->add(new admin_setting_configselect(
+        'local_webcourse/categoryid',
+        get_string('categoryid', 'local_webcourse'),
+        get_string('categoryid_desc', 'local_webcourse'),
+        1,
+        $categories ?: []
     ));
 
     $ADMIN->add('localplugins', $settings);

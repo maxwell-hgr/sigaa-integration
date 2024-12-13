@@ -25,6 +25,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['categoryid'] = 'Category ID';
+$string['categoryid_desc'] = 'Default category ID where the courses will be created.';
 $string['confirmcreate'] = 'Confirm and Create Course';
 $string['course_name'] = 'Course Name';
 $string['coursecreated'] = 'Course Created Successfully';
@@ -38,7 +40,11 @@ $string['nocsvdata'] = 'No csv data found';
 $string['participants_count'] = 'Participants Count';
 $string['pluginname'] = 'WEBSERVICE Integration - COURSE';
 $string['privacy:metadata'] = 'The Webcourse plugin does not store any personal data.';
+$string['roleid'] = 'Role ID';
+$string['roleid_desc'] = 'Default role ID to assign to enrolled users.';
 $string['submit'] = 'Submit';
+$string['user_not_found'] = 'User not found';
+$string['username_label'] = 'Username: {$a}';
 $string['usersnotfound'] = 'Users Not Found';
 
 

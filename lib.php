@@ -78,11 +78,12 @@ function local_webcourse_create_course($fullname, $shortname, $categoryid, $part
         foreach ($participants as $username) {
             $user = $DB->get_record('user', ['username' => $username]);
             if ($user) {
-                $manualenrol->enrol_user($manualinstance, $user->id, 5);
+                $roleid = get_config('local_webcourse', 'roleid');
+                $manualenrol->enrol_user($manualinstance, $user->id, $roleid);
             } else {
                 $notfoundusers[] = [
-                    'label' => __('Username: ' . $username),
-                    'value' => __('User not found'),
+                    'label' => get_string('username_label', 'local_webcourse', $username),
+                    'value' => get_string('user_not_found', 'local_webcourse'),
                 ];
             }
         }
@@ -112,7 +113,7 @@ function local_webcourse_generate_csv($data, $coursename) {
 
     foreach ($data as $row) {
         $formattedrow = [
-            'label' => __('Username: ' . $row['username']),
+            'label' => get_string('username_label', 'local_webcourse', $row['username']),
             'value' => $row['reason'],
         ];
 
